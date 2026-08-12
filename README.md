@@ -1,18 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project running on docker!
 
 ## Getting Started
 
 First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+| What you want | Command |
+|---------------|---------|
+| Start everything	| docker compose up | 
+| Start in background |	docker compose up -d |
+| Rebuild after changing Dockerfile or package.json | 	docker compose up --build |
+| See logs (if running detached) |	docker compose logs -f |
+| Stop it |	docker compose down (or Ctrl+C if in foreground) |
+| See what's running | 	docker ps |
+| Jump into a shell inside the container	| docker exec -it <container_name> sh |
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
