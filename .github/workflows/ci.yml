@@ -25,6 +25,6 @@ jobs:
       - run: npm run build
 
       - name: Build Docker image
-            run: docker build -f docker/Dockerfile -t miso-site .
+        run: docker build -f docker/Dockerfile -t miso-site .
 
       # - run: npm test 
