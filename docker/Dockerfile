@@ -1,16 +1,21 @@
-FROM node:22-alpine
+FROM node:20-alpine AS base
 
+FROM base AS deps
 WORKDIR /app
-
-# Install deps first (better layer caching)
-COPY package*.json ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
-# Copy the rest of the app and build
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 EXPOSE 3000
-
-# Use Next's own server
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
