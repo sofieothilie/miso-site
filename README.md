@@ -1,37 +1,81 @@
-This is a [Next.js](https://nextjs.org) project running on docker!
+# miso-site
 
-## Getting Started
+Personal site and portfolio.
 
-First, run the development server:
+**Live:** [miso-site](https://miso-site.onrender.com/)
 
-| What you want | Command |
-|---------------|---------|
-| Start everything	| docker compose up | 
-| Start in background |	docker compose up -d |
-| Rebuild after changing Dockerfile or package.json | 	docker compose up --build |
-| See logs (if running detached) |	docker compose logs -f |
-| Stop it |	docker compose down (or Ctrl+C if in foreground) |
-| See what's running | 	docker ps |
-| Jump into a shell inside the container	| docker exec -it <container_name> sh |
+## Status
+
+Core infrastructure is live and deployed. Site content and the admin panel are still being built.
+
+- [x] Next.js + TypeScript app scaffolded
+- [x] Dockerised and deployed to Render
+- [x] GitHub Actions CI (lint + build) gating merges to `main`
+- [ ] Site content (home, about, project case studies)
+- [ ] Admin panel with authenticated content editing
+
+## Tech stack
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js (React + TypeScript) |
+| Styling | Tailwind CSS |
+| Database | Supabase (Postgres + client SDK) |
+| Containerization | Docker |
+| Hosting | Render (Docker-based Web Service) |
+| CI | GitHub Actions (lint, build) |
+
+## Getting started
+
+```bash
+git clone https://github.com/sofieothilie/miso-site.git
+cd miso-site
+npm install
+npm run dev
+```
+
+App runs at `http://localhost:3000`.
+
+### Environment variables
+
+Copy `.env.example` to `.env.local` and fill in your Supabase project values (found in Supabase dashboard > Project Settings > API):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The app is containerized and deployed to [Render](https://render.com) as a Docker-based Web Service.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Dockerfile:** [`docker/Dockerfile`](./docker/Dockerfile)
+- **Build context:** repo root (`.`)
+- Render auto-deploys on every push to `main`
 
-## Learn More
+To build and run the image locally:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker build -f docker/Dockerfile -t miso-site .
+docker run -p 3000:3000 miso-site
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## CI/CD
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs on every push and pull request against `main`:
 
-## Deploy on Vercel
+1. Install dependencies
+2. Lint
+3. Build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`main` is protected by a GitHub ruleset requiring this check to pass before changes are merged.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Roadmap
+
+**Admin panel** — content (site copy, project write-ups, blog posts) will be editable through an authenticated `/admin` panel instead of direct repo edits, using Supabase Auth or Auth.js for login. This will introduce these additional environment variables:
+
+```
+SUPABASE_SERVICE_ROLE_KEY=   # server-side only, for writes that bypass RLS
+AUTH_SECRET=                 # if using Auth.js instead of Supabase Auth directly
+```
