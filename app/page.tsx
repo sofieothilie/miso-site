@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { createClient } from '@/lib/supabase/server'
+// import { createClient } from '@/lib/supabase/server'
 
 
 export default async function Home() {
-  const supabase = await createClient()
-  const { data: todos, error } = await supabase.from('todos').select()
+  // const supabase = await createClient()
+  // const { data: todos, error } = await supabase.from('todos').select()
 
   if (error) {
     return <p>Error: {error.message}</p>
@@ -28,11 +28,11 @@ export default async function Home() {
             </code>{" "}
             file.
           </h1>
-            <ul>
+            {/* <ul>
               {todos.map((todo) => (
                 <li key={todo.id}>{todo.task}</li>
               ))}
-            </ul>
+            </ul> */}
           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Looking for a starting point or more instructions? Head over to{" "}
             <a

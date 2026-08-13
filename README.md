@@ -79,3 +79,20 @@ docker run -p 3000:3000 miso-site
 SUPABASE_SERVICE_ROLE_KEY=   # server-side only, for writes that bypass RLS
 AUTH_SECRET=                 # if using Auth.js instead of Supabase Auth directly
 ```
+**Some breakable easter egg
+
+# Micro services
+
+## Simple browser game
+
+Implement a simple browser game which allows users to interact smoothly with the game. Needs to apply cookies to persist across sessions. No log in, on purpose. Microservice?
+
+## Some AI implementation
+
+Some AI implementation, e.g. chatbot. 
+
+## Some statistical site
+
+Some data visualisation. Large database. Load dynamically.
+Allow people to call from it, as an API
+
